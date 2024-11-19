@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>그래도 웃음이 필요하다</title>
+	<link href="https://fonts.cdnfonts.com/css/helvetica-lt-narrow" rel="stylesheet">
+
+	<style>
+		body {
+		  margin: 0;
+		  overflow: hidden;
+		  background: black;
+		}
+
+		video {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100vw;
+		  height: 100vh;
+		  object-fit: cover;
+		  z-index: 1;
+		  filter: none;
+		  transition: filter 0.1s ease-in-out; 
+		}
+
+		.overlay {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100vw;
+		  height: 100vh;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  z-index: 2;
+		}
+
+.overlay h2 {
+  font-size: 20rem;
+  color: yellow;
+  text-align: center;
+  transform: scale(1, 1.8);
+}
+
+.english-text {
+  font-family: 'Helvetica LT Narrow', sans-serif;
+}
+
+@font-face {
+    font-family: 'D2Coding';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/D2Coding.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.hidden {display: none !important;}
+
+		.p-text {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: white;
+			font-size: 1.4rem;
+			text-align: center;
+			line-height: 1.5;
+			font-family: 'D2Coding', sans-serif; 
+			display: none; 
+			white-space: nowrap;
+		}
+
+	</style>
+</head>
+<body>
+<video id="video-player" autoplay muted>
+	
+</video>
+  <div class="overlay english-text">
+    <h2>No Smile City</h2>
+  </div>
+  <p class="p-text">웃음이 사라진 2428년<br><font color="gray">2428 years when laughter disappeared</font></p>
+
+  <script type="text/javascript">
+	
+	const videoFiles = ["video1.mp4", "video2.mp4", "video3.mp4"];
+
+	
+	let currentVideoIndex = 0;
+
+	
+	const videoPlayer = document.getElementById("video-player");
+	const overlay = document.querySelector(".overlay");
+	const pText = document.querySelector(".p-text");
+	const audio = new Audio("entity.mp3");
+	audio.loop = true; 
+
+	
+	let clickCount = 0;
+
+	
+	document.addEventListener("DOMContentLoaded", () => {
+		
+		videoPlayer.src = videoFiles[currentVideoIndex];
+
+		
+		videoPlayer.addEventListener("ended", () => {
+			
+			currentVideoIndex = (currentVideoIndex + 1) % videoFiles.length;
+
+			
+			videoPlayer.src = videoFiles[currentVideoIndex];
+			videoPlayer.play();
+		});
+	});
+
+	// 커서 움직임에 따른 필터 효과 추가
+	document.addEventListener("mousemove", () => {
+		// 비디오에 랜덤 필터 효과 적용
+		const randomBlur = Math.random() * 5; // 0~5px 사이의 블러 효과
+		const randomContrast = Math.random() * 2 + 1; // 1~3배 사이의 대비
+		const randomOpacity = Math.random() * 0.5 + 0.5; // 50%~100% 투명도
+
+		videoPlayer.style.filter = `blur(${randomBlur}px) contrast(${randomContrast}) opacity(${randomOpacity})`;
+	});
+
+
+
+	// 마우스가 화면을 벗어나면 필터 초기화
+	document.addEventListener("mouseout", () => {
+		videoPlayer.style.filter = "none"; 
+	});
+
+	function typeEffect(message, index = 0) {
+  if (index === 0) {
+    pText.innerHTML = "";
+  }
+
+  if (index < message.length) {
+    pText.innerHTML = message.substring(0, index + 1);
+
+
+    setTimeout(() => typeEffect(message, index + 1), 50);
+  }
+}
+
+
+document.addEventListener("click", () => {
+  if (clickCount === 0) {
+    // 처음 클릭 시 동영상 및 h2 숨기기
+    videoPlayer.classList.add("hidden");
+    overlay.classList.add("hidden");
+    pText.style.display = "block";
+
+
+			audio.play();
+
+    typeEffect(`웃음이 사라진 2428년<br><font color="gray">2428 years when laughter disappeared</font>`);
+  } else if (clickCount === 1) {
+    typeEffect(
+      `감정표현은 타인을 피로하게 함에 따라 부가가치세를 납부해야 하는 행위가 되었다.<br><font color="gray">Expressing emotions has become an act of paying VAT as it makes others tired.</font>`
+    );
+  } else if (clickCount === 2) {
+    typeEffect(
+      `돈이 없는 자에게 감정은 부산물이 되었고<br><font color="gray">Emotions have become a byproduct for those who don't have money</font>`
+    );
+  } else if (clickCount === 3) {
+    typeEffect(
+      `돈이 있는 자는 감정 교육을 받게 된다.<br><font color="gray">Those who have money will receive emotional education.</font>`
+    );
+  } else if (clickCount === 4) {
+    typeEffect(
+      `당신은 거액을 들여 교육을 1회 받기로 결정했다.<br><font color="gray">You decided to spend a lot of money on one training session.</font>`
+    );
+  } else if (clickCount === 5) {
+    typeEffect(
+      `예시 사진의 표정을 따라해보고 맞게 표현했는지 확인해보자.<br><font color="gray">Let's copy the expression in the example picture and see if it's expressed correctly.</font>`
+    );
+  }
+
+  clickCount++;
+});
+</script>
+</body>
+</html>
