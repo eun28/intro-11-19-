@@ -100,20 +100,22 @@
 	let clickCount = 0;
 
 	
-	document.addEventListener("DOMContentLoaded", () => {
-		
-		videoPlayer.src = videoFiles[currentVideoIndex];
+	unction playNextVideo() {
+  // 현재 동영상 설정
+  videoPlayer.src = videoFiles[currentVideoIndex];
+  videoPlayer.play();
 
-		
-		videoPlayer.addEventListener("ended", () => {
-			
-			currentVideoIndex = (currentVideoIndex + 1) % videoFiles.length;
+  // 5초 후에 다음 동영상으로 전환
+  setTimeout(() => {
+    currentVideoIndex = (currentVideoIndex + 1) % videoFiles.length; // 다음 동영상 인덱스 계산
+    playNextVideo(); // 재귀 호출로 다음 동영상 재생
+  }, 3000); // 5000ms = 5초
+}
 
-			
-			videoPlayer.src = videoFiles[currentVideoIndex];
-			videoPlayer.play();
-		});
-	});
+// DOMContentLoaded 이벤트를 사용하여 HTML 파싱 후 JavaScript 실행
+document.addEventListener("DOMContentLoaded", () => {
+  playNextVideo(); // 첫 번째 동영상 재생 시작
+});
 
 	// 커서 움직임에 따른 필터 효과 추가
 	document.addEventListener("mousemove", () => {
